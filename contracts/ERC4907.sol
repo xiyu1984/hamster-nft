@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 interface IERC4907 {
     // Logged when the user of a token assigns a new user or updates expires
@@ -29,7 +30,7 @@ interface IERC4907 {
     function userExpires(uint256 tokenId) external view returns(uint256);
 }
 
-contract ERC4907 is ERC721, IERC4907 {
+contract ERC4907 is ERC721, IERC4907, Ownable {
     struct UserInfo
     {
         address user;   // address of user role
@@ -38,14 +39,32 @@ contract ERC4907 is ERC721, IERC4907 {
 
     mapping (uint256  => UserInfo) internal _users;
 
-    constructor()
-    ERC721("MyNFT","MFT")
+    uint256 private _nextID;
+
+    constructor(string memory _name, string memory _symbol)
+    ERC721(_name, _symbol)
     {
     }
 
-    function safeMint(address to, uint256 amount) public virtual {
-        _safeMint(to, amount);
+    function _baseURI() internal view virtual override returns (string memory) {
+        return "https://omniversedlt.s3.amazonaws.com/515/";
     }
+
+    function batchMint(address to, uint256 amount) external onlyOwner() {
+        for (uint i = 0; i < amount; i++) {
+            _mint(to, _nextID);
+            _nextID++;
+        }
+    }
+
+    function burn(uint256 tokenId) external onlyOwner() {
+        _burn(tokenId);
+
+    }
+
+    // function safeMint(address to, uint256 amount) public virtual {
+    //     _safeMint(to, amount);
+    // }
 
     /// @notice set the user and expires of a NFT
     /// @dev The zero address indicates there is no user
