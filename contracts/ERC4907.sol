@@ -47,7 +47,14 @@ contract ERC4907 is ERC721, IERC4907, Ownable {
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
+        // return "https://omniversedlt.s3.amazonaws.com/515/";
         return "https://omniversedlt.s3.amazonaws.com/515/";
+    }
+
+    // contract metadata for opensea
+    function contractURI() public pure returns (string memory) {
+        string memory json = '{"name": "Omniverse Labs Hongkong 515","description":"Web2 to Web3, World to Hong Kong", "image": "https://omniversedlt.s3.amazonaws.com/515/0.png"}';
+        return string.concat("data:application/json;utf8,", json);
     }
 
     function batchMint(address to, uint256 amount) external onlyOwner() {
