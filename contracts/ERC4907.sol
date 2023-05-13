@@ -48,7 +48,7 @@ contract ERC4907 is ERC721, IERC4907, Ownable {
 
     function _baseURI() internal view virtual override returns (string memory) {
         // return "https://omniversedlt.s3.amazonaws.com/515/";
-        return "https://omniversedlt.s3.amazonaws.com/515/";
+        return "https://github.com/xiyu1984/hamster-nft/blob/main/test/metadata/";
     }
 
     // contract metadata for opensea
