@@ -73,7 +73,7 @@ contract NFT is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable, E
         return super.supportsInterface(interfaceId);
     }
 
-    function showDescription() return string {
+    function showDescription() view public returns (string) {
         return "Hello Hamster!";
     }
 }
